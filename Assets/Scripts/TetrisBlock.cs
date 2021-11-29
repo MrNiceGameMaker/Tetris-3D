@@ -6,7 +6,7 @@ public class TetrisBlock : MonoBehaviour
 {
     float prevTime;
     float fallTime = 1f;
-
+    Vector3 mouseTurn;
 
     // Start is called before the first frame update
     void Start()
@@ -22,8 +22,10 @@ public class TetrisBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        mouseTurn.x = Input.GetAxis("Mouse X");
+        mouseTurn.y = Input.GetAxis("Mouse Y");
         //makes the block fall 1 unit every 1 sec(falltime)
-        if(Time.time - prevTime > fallTime)
+        if (Time.time - prevTime > fallTime)
         {
             transform.position += Vector3.down;
 
@@ -38,7 +40,7 @@ public class TetrisBlock : MonoBehaviour
                     PlayField.instance.SpawnNewBlock();
                 }
                 //create new tetris block
-                
+
 
             }
             prevTime = Time.time;
@@ -50,36 +52,40 @@ public class TetrisBlock : MonoBehaviour
         }
 
         //move with the keyboard
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if ((Input.GetKeyDown(KeyCode.LeftArrow)) || ((mouseTurn.x < 0f) && (Input.GetMouseButtonDown(1))))
         {
             SetInput(Vector3.left);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow) || ((mouseTurn.x > 0f) && (Input.GetMouseButtonDown(1))))
         {
             SetInput(Vector3.right);
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || ((mouseTurn.y > 0f) && (Input.GetMouseButtonDown(1))))
         {
             SetInput(Vector3.forward);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) || ((mouseTurn.y < 0f) && (Input.GetMouseButtonDown(1))))
         {
             SetInput(Vector3.back);
         }
+        if (Input.GetKeyDown(KeyCode.Space) || ((Input.GetMouseButtonDown(1)) && (Input.GetMouseButtonDown(0))))
+        {
+            SetSpeed();
+        }
         //rotate with the W,S,A,D
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) || ((mouseTurn.x < 0f) && (Input.GetMouseButtonDown(2))))
         {
             SetRotationInput(new Vector3(0,90,0));
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) || ((mouseTurn.x > 0f) && (Input.GetMouseButtonDown(2))))
         {
             SetRotationInput(new Vector3(0, -90, 0));
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) || ((mouseTurn.y < 0f) && (Input.GetMouseButtonDown(2))))
         {
             SetRotationInput(new Vector3(90, 0, 0));
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) || ((mouseTurn.y > 0f) && (Input.GetMouseButtonDown(2))))
         {
             SetRotationInput(new Vector3(-90, 0, 0));
         }
